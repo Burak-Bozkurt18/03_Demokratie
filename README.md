@@ -16,6 +16,7 @@ It explores regime types, regional averages, and country-specific trends using R
 ## Example Output
 ![World Map by Regime](output/world_map_regime.png)
 ![Average Scores by Region](output/avg_score_region.png)
+![Countries with negative Trend](output/panel_graph_negative.png)
 
 ## Author
 Burak Bozkurt
