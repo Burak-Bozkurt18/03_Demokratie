@@ -7,7 +7,6 @@ It explores regime types, regional averages, and country-specific trends using R
 - Data scraping from Wikipedia (Democracy Index tables)
 - Data cleaning and harmonization of country names
 - World map visualizations of regime types and regions
-- Time series analysis of democracy scores (2006–2024)
 - Country-level trend analysis with custom panel plots
 
 ## Tools
