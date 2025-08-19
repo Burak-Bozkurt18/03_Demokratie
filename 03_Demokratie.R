@@ -281,4 +281,3 @@ panel_graph(country = c("Afghanistan", "Mali", "Nicaragua", "Russia", "Venezuela
 # Countries with negative trends
 panel_graph(country = c("Angola", "Bhutan", "Malaysia", "Armenia")) +
   scale_color_brewer(palette = "Set1")
-
