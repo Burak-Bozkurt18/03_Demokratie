@@ -172,7 +172,7 @@ world_map <- full_join(world_map, dem.index, join_by(region2 == country))
 ## 2.1 Countries by region =====================================================
 
 # Plot world map (Region)
-ggplot(world_map, aes(x = long, y = lat, group = group, fill = region.y)) +
+p1 <- ggplot(world_map, aes(x = long, y = lat, group = group, fill = region.y)) +
   geom_polygon(color = "black") +
   labs(
     title = "World Regions according to the Economist",
@@ -180,13 +180,18 @@ ggplot(world_map, aes(x = long, y = lat, group = group, fill = region.y)) +
   ) +
   world_map_theme
 
+p1
+
+# Save output
+ggsave("output/world_map_regions.png", plot = p1, width = 10, height = 6, dpi = 300)
+
 ## 2.2 Countries by regime type ================================================
 
 # extract the most recent year for which we have observations
 most_recent_year <- dem.index |> select(starts_with("x")) |> colnames() |> sub(pattern = "x", replacement = "") |> first()
 
 # Plot World Map (regime type)
-ggplot(world_map, aes(x = long, y = lat, group = group, fill = regime_type)) +
+p2 <- ggplot(world_map, aes(x = long, y = lat, group = group, fill = regime_type)) +
   geom_polygon(color = "black") +
   labs(
     title = paste0("Countries by Regime Type (", most_recent_year, ")"),
@@ -194,6 +199,11 @@ ggplot(world_map, aes(x = long, y = lat, group = group, fill = regime_type)) +
     ) +
   world_map_theme +
   scale_fill_manual(values = c("darkgreen", "green", "orange", "red"))
+
+p2
+
+# Save output
+ggsave("output/world_map_regime.png", plot = p2, width = 10, height = 6, dpi = 300)
 
 # 3 DEMOCRACY DEVELOPMENT BY COUNTRY (2006 - 2024) =============================
 
@@ -231,7 +241,7 @@ avg.score.region <- avg.score.region |>
     region = fct_reorder(region, avg.score, .desc = TRUE) # reorder levels of region by avg.score
   )
 
-avg.score.region |> 
+p3 <- avg.score.region |> 
   ggplot(aes(
     x = year, 
     y = avg.score, 
@@ -274,12 +284,27 @@ avg.score.region |>
     expand = c(0,0) # y axis strictly begins at 0 and ends at 10
   )
 
+p3 
+
+# Save output
+ggsave("output/avg_score_region.png", plot = p3, width = 10, height = 6, dpi = 300)
+
 ## 3.3 Development of democracy in specific countries ==========================
 
 # Countries with positive trends
-panel_graph(country = c("Afghanistan", "Mali", "Nicaragua", "Russia", "Venezuela")) +
+p4 <- panel_graph(country = c("Afghanistan", "Mali", "Nicaragua", "Russia", "Venezuela")) +
   scale_color_brewer(palette = "Dark2")
 
+p4
+
+# Save output
+ggsave("output/panel_graph_positive.png", plot = p4, width = 10, height = 6, dpi = 300)
+
 # Countries with negative trends
-panel_graph(country = c("Angola", "Bhutan", "Malaysia", "Armenia")) +
+p5 <- panel_graph(country = c("Angola", "Bhutan", "Malaysia", "Armenia")) +
   scale_color_brewer(palette = "Set1")
+
+p5
+
+# Save output
+ggsave("output/panel_graph_negative.png", plot = p5, width = 10, height = 6, dpi = 300)
