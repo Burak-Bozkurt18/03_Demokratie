@@ -8,7 +8,6 @@
 
 # 1 PREPARATION ===============================================================
 
-
 ## 1.1 Load Libraries ==========================================================
 library(tidyverse)
 # library(rvest) # For exctracting elements from html
@@ -20,6 +19,7 @@ library(countrycode)
 
 ## 1.2 Define Functions ========================================================
 
+# Theme setting for world map
 world_map_theme <- theme_minimal() +
     theme(
       text = element_text(family = "serif"),
@@ -31,6 +31,7 @@ world_map_theme <- theme_minimal() +
       legend.position = "bottom"
     )
 
+# Theme setting for panel graphs
 panel_theme <- theme_bw() +
   theme(
     text = element_text(family = "serif"),
@@ -39,6 +40,60 @@ panel_theme <- theme_bw() +
     legend.title = element_blank(),
     panel.grid.minor = element_blank() # removes unnecessary grids between the years
   )
+
+# Creates panel graphs
+panel_graph <- function(country) {
+  
+  if (!is_character({{ country }})) {
+    stop("\n Input has to be a country from the democracy index!")
+  }
+  
+  dem.index.long |> 
+    filter(country %in% {{ country }}) |> 
+    mutate(
+      country = fct_reorder(country, score, .desc = TRUE) # sort factor levels of region by score
+    ) |> 
+    ggplot(aes(x = year, y = score, col = country, linetype = country, shape = country)) +
+    geom_rect(
+      data = data.frame(
+        xmin = -Inf, 
+        xmax = Inf,
+        ymin = c(0, 4, 6, 8),
+        ymax = c(4, 6, 8, 10),
+        regime = c(
+          "Authoritarian" = "red", 
+          "Hybrid regime" = "orange", 
+          "Flawed democracy" = "green", 
+          "Full democracy" = "darkgreen"
+        )
+      ),
+      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = regime), alpha = .15,
+      inherit.aes = FALSE,
+      show.legend = FALSE
+    ) +
+    scale_fill_identity( # necessary for using the colors defined above
+      guide = "legend",
+      labels = c("Full democracy", "Flawed democracy", "Hybrid regime", "Authoritarian")
+    ) + 
+    geom_line(linewidth = 1) +
+    geom_point(size = 3) +
+    panel_theme +
+    geom_hline(
+      yintercept = c(4, 6, 8), # for including the dotted horizontal lines
+      linetype = "dotted"
+    ) +
+    labs(
+      x = "Year", 
+      y = "Score", 
+      title = paste0("Democracy Index - Scores (2006 - ", most_recent_year, ")"),
+      caption = "Source: The Economist"
+    ) +
+    scale_y_continuous(
+      breaks = seq(0, 10, 1), 
+      expand = c(0,0) # y axis strictly begins at 0 and ends at 10
+    ) +
+    scale_x_continuous(breaks = c(2006, 2008, 2010:most_recent_year))
+}
 
 ## 1.3 Scrape and save data ====================================================
 
@@ -220,59 +275,6 @@ avg.score.region |>
   )
 
 ## 3.3 Development of democracy in specific countries ==========================
-
-panel_graph <- function(country) {
-  
-  if (!is_character({{ country }})) {
-    stop("\n Input has to be a country from the democracy index!")
-  }
-  
-  dem.index.long |> 
-    filter(country %in% {{ country }}) |> 
-    mutate(
-      country = fct_reorder(country, score, .desc = TRUE) # sort factor levels of region by score
-    ) |> 
-    ggplot(aes(x = year, y = score, col = country, linetype = country, shape = country)) +
-    geom_rect(
-      data = data.frame(
-        xmin = -Inf, 
-        xmax = Inf,
-        ymin = c(0, 4, 6, 8),
-        ymax = c(4, 6, 8, 10),
-        regime = c(
-          "Authoritarian" = "red", 
-          "Hybrid regime" = "orange", 
-          "Flawed democracy" = "green", 
-          "Full democracy" = "darkgreen"
-        )
-      ),
-      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = regime), alpha = .15,
-      inherit.aes = FALSE,
-      show.legend = FALSE
-    ) +
-    scale_fill_identity( # necessary for using the colors defined above
-      guide = "legend",
-      labels = c("Full democracy", "Flawed democracy", "Hybrid regime", "Authoritarian")
-    ) + 
-    geom_line(linewidth = 1) +
-    geom_point(size = 3) +
-    panel_theme +
-    geom_hline(
-      yintercept = c(4, 6, 8), # for including the dotted horizontal lines
-      linetype = "dotted"
-    ) +
-    labs(
-      x = "Year", 
-      y = "Score", 
-      title = paste0("Democracy Index - Scores (2006 - ", most_recent_year, ")"),
-      caption = "Source: The Economist"
-    ) +
-    scale_y_continuous(
-      breaks = seq(0, 10, 1), 
-      expand = c(0,0) # y axis strictly begins at 0 and ends at 10
-    ) +
-    scale_x_continuous(breaks = c(2006, 2008, 2010:most_recent_year))
-}
 
 # Countries with positive trends
 panel_graph(country = c("Afghanistan", "Mali", "Nicaragua", "Russia", "Venezuela")) +
