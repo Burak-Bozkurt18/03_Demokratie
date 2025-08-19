@@ -112,7 +112,7 @@ panel_graph <- function(country) {
 
 ### 1.4.1 Read democracy data ==================================================
 
-dem.index <- read_excel("democracy_index.xlsx")
+dem.index <- read_excel("data/democracy_index.xlsx")
 
 ### 1.4.2 Load world map data ==================================================
 
