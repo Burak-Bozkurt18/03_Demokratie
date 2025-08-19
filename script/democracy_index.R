@@ -28,7 +28,9 @@ world_map_theme <- theme_minimal() +
       axis.text = element_blank(),
       panel.grid = element_blank(),
       legend.title = element_blank(),
-      legend.position = "bottom"
+      legend.position = "bottom",
+      plot.background = element_rect(fill = "white", color = NA),
+      panel.background = element_rect(fill = "white", color = NA)
     )
 
 # Theme setting for panel graphs
