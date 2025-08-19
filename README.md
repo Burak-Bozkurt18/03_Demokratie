@@ -13,5 +13,9 @@ It explores regime types, regional averages, and country-specific trends using R
 - R (tidyverse, ggplot2, janitor, readxl, countrycode, maps)
 - Data source: [Wikipedia – Economist Democracy Index](https://en.wikipedia.org/wiki/Democracy_Index)
 
+## Example Output
+![World Map by Regime](output/world_map_regime.png)
+![Average Scores by Region](output/avg_score_region.png)
+
 ## Author
 Burak Bozkurt
