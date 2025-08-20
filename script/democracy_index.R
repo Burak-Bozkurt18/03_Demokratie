@@ -293,20 +293,20 @@ ggsave("output/avg_score_region.png", plot = p3, width = 10, height = 6, dpi = 3
 
 ## 3.3 Development of democracy in specific countries ==========================
 
-# Countries with positive trends
+# Countries with negative trends
 p4 <- panel_graph(country = c("Afghanistan", "Mali", "Nicaragua", "Russia", "Venezuela")) +
   scale_color_brewer(palette = "Dark2")
 
 p4
 
 # Save output
-ggsave("output/panel_graph_positive.png", plot = p4, width = 10, height = 6, dpi = 300)
+ggsave("output/panel_graph_negative.png", plot = p4, width = 10, height = 6, dpi = 300)
 
-# Countries with negative trends
+# Countries with positive trends
 p5 <- panel_graph(country = c("Angola", "Bhutan", "Malaysia", "Armenia")) +
   scale_color_brewer(palette = "Set1")
 
 p5
 
 # Save output
-ggsave("output/panel_graph_negative.png", plot = p5, width = 10, height = 6, dpi = 300)
+ggsave("output/panel_graph_positive.png", plot = p5, width = 10, height = 6, dpi = 300)
