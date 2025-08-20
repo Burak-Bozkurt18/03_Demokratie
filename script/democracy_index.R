@@ -71,7 +71,6 @@ panel_graph <- function(country) {
       ),
       aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = regime), alpha = .15,
       inherit.aes = FALSE,
-      show.legend = FALSE
     ) +
     scale_fill_identity( # necessary for using the colors defined above
       guide = "legend",
